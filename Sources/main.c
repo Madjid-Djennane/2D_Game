@@ -1,49 +1,100 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
 #include "../Headers/carte.hpp"
-//#include "../Headers/element.hpp"
-/* 
-#include "../Headers/guerrier.hpp"
-#include "../Headers/obstacle.hpp"
-#include "../Headers/objet.hpp"
- */
-
 #include <map>
 
+int main() {
 
-int main(int argc, char const *argv[]){
+        //Load obstacle Texture
+    sf::Texture obstacleTexture;
+    if(!obstacleTexture.loadFromFile("../img/wall.png"))
+        std::cout << "Texture Error" << std::endl;
+    //Load Player Texture
+    sf::Texture playerTexture;
+    if(!playerTexture.loadFromFile("../img/skeletons.png"))
+        std::cout << "Texture Error" << std::endl;
+    //Load Object Texture
+    sf::Texture objectTexture;
+    if(!objectTexture.loadFromFile("../img/wall.png"))    
+        std::cout << "Texture Error" << std::endl;
+
     
-    Carte c = Carte("../maps/niveau1.txt");
 
-   // c.descCarte();
-    
-    std::cout << "----------------------------------------------------" << std::endl;
-
+    Carte c = Carte("../maps/niveau1.txt", playerTexture, objectTexture, obstacleTexture);
     std::map<std::string, Element *> map = c.getMap();
 
-    Element * g =  map["000000"];
-    Guerrier * gg = static_cast<Guerrier *> (g); 
- 
-//    static_cast<Guerrier *> (g)->completeDesc
-
-    gg->completeDesc();
+    int winWidth(c.getLarg()*64);
+    int winHeigth(c.getHaut()*64);
+    
 
 
-/*     if (c.moveGuerrier(map["002003"],'o')) {
-        c.descCarte();
-    } else {
-        std::cout << "déplacement interdit !" << std::endl; 
+    Element * g =  map["00320032"];
+    Guerrier * player = static_cast<Guerrier *> (g);
+
+    //c.descCarte();
+
+    //Window
+    sf::RenderWindow window(sf::VideoMode(winWidth, winHeigth), "Testing");
+    window.setKeyRepeatEnabled(false);
+
+    //Game Loop
+    while (window.isOpen()) {
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear(); //Clear Window
+        
+        //PLAYER MOVEMENT
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){ //Move Up
+
+            if(c.moveGuerrier(g,0)){
+                Position initPos = player->getPosition();
+                player->moveUp();
+                c.updateMap(player,initPos);
+            }
+                
+
+        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){ //Move Down
+
+            if(c.moveGuerrier(g,2)){
+                Position initPos = player->getPosition();
+                player->moveDown();
+                c.updateMap(player,initPos);
+            }
+        } 
+            
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){ //Move Right
+
+            if(c.moveGuerrier(g,3)) {
+                Position initPos = player->getPosition();
+                player->moveRight();
+                c.updateMap(player,initPos);
+            }
+                
+        } 
+        
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){ //Move Left
+            
+            if(c.moveGuerrier(g,1)){
+                Position initPos = player->getPosition();
+                player->moveLeft();
+                c.updateMap(player,initPos);
+            }
+        } 
+
+
+        for(auto& element : map){
+            window.draw(element.second->getSprite());
+        }
+        
+
+        window.display(); //Display Window
     }
- */
-
-    
-    
-    std::cout << "----------------------------------------------------" << std::endl;
-
-
-    /* std::cout << c.moveGuerrier((Guerrier *)c.getMap()["000000"],'e') << std::endl;
-    
-    c.descCarte();
- */
-    c.~Carte();
 
     return 0;
 }
