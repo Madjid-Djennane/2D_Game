@@ -1,0 +1,37 @@
+        //PLAYER MOVEMENT
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){ //Move Up
+
+            if(c.moveGuerrier(g,0)){
+                Position initPos = player->getPosition();
+                player->moveUp();
+                c.updateMap(player,initPos);
+            }
+                
+
+        } else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){ //Move Down
+
+            if(c.moveGuerrier(g,2)){
+                Position initPos = player->getPosition();
+                player->moveDown();
+                c.updateMap(player,initPos);
+            }
+        } 
+            
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){ //Move Right
+
+            if(c.moveGuerrier(g,3)) {
+                Position initPos = player->getPosition();
+                player->moveRight();
+                c.updateMap(player,initPos);
+            }
+                
+        } 
+        
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){ //Move Left
+            
+            if(c.moveGuerrier(g,1)){
+                Position initPos = player->getPosition();
+                player->moveLeft();
+                c.updateMap(player,initPos);
+            }
+        } 

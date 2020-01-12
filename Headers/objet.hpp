@@ -7,12 +7,15 @@
     class Objet : public Element{
         private :
             int points;
+            sf::Sprite _Sprite;
         public :
             Objet();
-            Objet(Position,int);
+            Objet(Position,int,sf::Texture &);
             int getPoints() const;
             void setPoints(int);
             void desc();
+            sf::Sprite getSprite() const;
+            
             
     };
 

@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "../Headers/carte.hpp"
 
 #include "../Headers/guerrier.hpp"
@@ -12,8 +13,11 @@
 using namespace std;
 
 
-    Carte::Carte(std::string file){
-        
+    Carte::Carte(std::string file, sf::Texture _player, sf::Texture _object,sf::Texture _obstacle):
+        playerTexture(_player),
+        objectTexture(_object),
+        obstacleTexture(_obstacle){   
+
         ifstream infile(file);
 
         if(!infile){
@@ -25,15 +29,18 @@ using namespace std;
 
         getline(infile,line);
         larg = stoi(line);
-        
+
+        std::cout << larg << std::endl;
         
         getline(infile,line);
         haut = stoi(line);
+
+        std::cout << haut << std::endl;
         
         for(int i = 0; i< haut; i++){
             getline(infile,line);
             for(int j = 0; j<larg; j++){
-                Carte::addElement(i,j,line[j]);
+                Carte::addElement(j,i,line[j]);
             }
             
         }
@@ -48,10 +55,10 @@ using namespace std;
         std::string sx = std::to_string(x);
         std::string sy = std::to_string(y);
 
-        while(sx.size() < 3){
+        while(sx.size() < 4){
             sx = "0"+sx;
         }
-        while(sy.size() < 3){
+        while(sy.size() < 4){
             sy = "0"+sy;
         }
 
@@ -90,30 +97,30 @@ using namespace std;
 
     // ajouter un l'element à la position (x,y) dans le fichier décrit par le caractère 'c'
     void Carte::addElement(int x, int y, char c){
-        
+
+        y = y*64+32;
+        x = x*64+32;
+
         string codePos(Carte::getCodePos(x,y));
 
-        if(c == 'g' || c =='G'){
 
-            //Guerrier guerrier = Guerrier(Position(x,y),"guerrier",c,60,40,100); 
+        if(c == 'g' || c =='h'){ 
             
             map.insert(make_pair(codePos,
-            new Guerrier(Position(x,y),"guerrier",c,60,40,100) 
-            
+            new Guerrier(Position(x,y),"guerrier",c,60,40,100,playerTexture) 
             ));
 
         }else if(c == '*'){
-            Obstacle obstacle = Obstacle(Position(x,y),"mur"); 
+            
             map.insert(make_pair(codePos,
-            new Obstacle(Position(x,y),"mur")
+            new Obstacle(Position(x,y),"mur",obstacleTexture)
             
             ));
 
         }else if(c >= '0' && c <= '9'){
 
-            Objet objet = Objet(Position(x,y),(int)c - 48);
             map.insert(make_pair(codePos,
-            new Objet(Position(x,y),(int)c - 48)
+            new Objet(Position(x,y),(int)c - 48,objectTexture)
             
             ));
         }
@@ -122,8 +129,9 @@ using namespace std;
 
     // Déplacer un Guerrier
 
-    bool Carte::moveGuerrier(Element * guerrier, char direction){
+    bool Carte::moveGuerrier(Element * guerrier, int direction){
         
+        // la position du guerrier dans l'interface
         int x = guerrier->getPosition().getX();
         int y = guerrier->getPosition().getY();
 
@@ -131,55 +139,97 @@ using namespace std;
 
 
         switch (direction){
-            case 'n':
-                x-- ;
+            case 0: //up
+                y=y-16;
+                
+                for(int i=0; i < 64; i++) {
+                    int x2 = x-i;
+                    if(map.count(Carte::getCodePos(x2,y-64))>0){
+                        //std::cout << "trouvé" << std::endl;
+                        return false;
+                        break;
+                    }
+                }        
                 break;
-            case 's':
-                x++;
+
+            case 1: //left
+                x=x-16;
+                for(int i=0; i < 64; i++) {
+                    int y2 = y-i;
+                    if(map.count(Carte::getCodePos(x-64,y2))>0){
+                        //std::cout << "trouvé" << std::endl;
+                        return false;
+                        break;
+                    }
+                }
                 break;
-            case 'e':
-                y++;
+
+            case 2: //down
+                y=y+32;
+                for(int i=0; i < 64; i++) {
+                    int x2 = x-i;
+                    if(map.count(Carte::getCodePos(x2,y))>0){
+                        //std::cout << "trouvé" << std::endl;
+                        return false;
+                        break;
+                    }
+                }
                 break;
-            case 'o':
-                y--;
-                break;        
+
+            case 3: //right
+                x=x+16;
+                for(int i=0; i < 64; i++) {
+                    int y2 = y-i;
+                    if(map.count(Carte::getCodePos(x,y2))>0){
+                        //std::cout << "trouvé" << std::endl;
+                        return false;
+                        break;
+                    }
+                }                
+                break;
+
             default:
+                return false;
                 break;
         }
 
-        // la position sort de la carte
 
+
+        // la position du guerrier sort de la carte : retourne false
         if (x<0 || y<0) return false;
+        if (x > larg*64 || y > haut*64) return false;
 
-        if (x > haut-1 || y > larg-1) return false;
 
-        
-        
-        // Code de la position après le déplacement
-        string depl = Carte::getCodePos(x,y);
-        
-
-        // Vérifier si le code appartient à la Map 
-        // (Si c'est le cas il y'a un élément a cet emplacement)
-        if(map.count(depl)  > 0) return false;
-
-        // Le déplacement est possible
-
-        guerrier->setPos(x,y);
- 
-        map[depl] = map[init];
-
-        map.erase(init);
- 
         return true;
     }
 
-    void Carte::descCarte() const{
+    // mise à jour de la position d'un guerrier dans la map
+
+    void Carte::updateMap(Guerrier * guerrier, Position initPos) {
+        
+        string init = Carte::getCodePos(initPos.getX(), initPos.getY());
+        string depl = Carte::getCodePos(guerrier->getPosition().getX(),
+                                        guerrier->getPosition().getY());
+
+        map.erase(init);
+        map.insert(make_pair(depl,guerrier));                           
+        
+    }
+
+    void Carte::descCarte() const {
         for(auto& element : map){
             cout << element.first << " ==>  ";
             element.second->desc();
             
         }
+    }
+
+    int Carte::getLarg() const {
+        return larg;
+    }
+
+    int Carte::getHaut() const {
+        return haut;
     }
 
     Carte::~Carte(){

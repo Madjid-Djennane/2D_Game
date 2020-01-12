@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "../Headers/element.hpp"
 
     Element::Element(Position p) : position(p){
@@ -13,4 +14,5 @@
 
     void Element::setPos(int x, int y){}
 
+    
 

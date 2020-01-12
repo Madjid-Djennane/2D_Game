@@ -27,10 +27,10 @@
         std::string sx = std::to_string(x);
         std::string sy = std::to_string(y);
 
-        while(sx.size() < 3){
+        while(sx.size() < 4){
             sx = "0"+sx;
         }
-        while(sy.size() < 3){
+        while(sy.size() < 4){
             sy = "0"+sy;
         }
 
