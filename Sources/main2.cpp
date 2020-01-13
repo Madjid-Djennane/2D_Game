@@ -3,11 +3,10 @@
 #include "../Headers/game.hpp"
 #include "../Headers/carte.hpp"
 #include <map>
+#include <typeinfo>
+
 
 int main() {
-
-
-    
     
     Game game = Game();
     std::map<std::string, Element *> map = game.getMap();
@@ -20,6 +19,7 @@ int main() {
     //Window
     sf::RenderWindow window(sf::VideoMode(winWidth, winHeigth), "Testing");
     window.setKeyRepeatEnabled(false);
+
 
     bool bloque(false);
     int dir(0);
@@ -39,9 +39,9 @@ int main() {
         game.mainPlayerMovement();
 
         if(game.autoPlayerMovement(dir)){
-            dir = (dir + 1) % 3;
+            dir = std::rand() % 4;
         }
-
+ 
         for(auto& element : map){
             window.draw(element.second->getSprite());
         }
@@ -49,6 +49,8 @@ int main() {
 
         window.display(); //Display Window
     }
+    
+    
 
     
 

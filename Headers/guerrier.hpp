@@ -34,7 +34,7 @@
             void desc();
             void completeDesc() const;
             bool estAdversaire(Guerrier *);
-            
+            char getName() const;
 
             //PLAYER MOVEMENT FUNCTIONS
             void moveUp();

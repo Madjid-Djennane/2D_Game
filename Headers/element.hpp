@@ -15,6 +15,7 @@ class Element{
         virtual void desc();
         virtual void setPos(int,int);
         virtual sf::Sprite getSprite() const = 0;
+        virtual char getName() const = 0; 
         
         
 };

@@ -29,5 +29,9 @@ using namespace std;
         return _Sprite;
     }
 
+    char Objet::getName() const {
+        return 'a';
+    }
+
 
 

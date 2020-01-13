@@ -55,38 +55,6 @@ using namespace std;
         return pointsVie;
     }
 
-    
-/*     void Guerrier::deplacerGuerrier(char c, Carte carte){
-        if(carte.moveGuerrier(this,c)){
-            int x = position.getX();
-            int y = position.getY();
-            
-            switch (c){
-                case 'n':
-                    position.setPosition(x--,y) ;
-                    break;
-                case 's':
-                    position.setPosition(x++,y);
-                    break;
-                case 'e':
-                    position.setPosition(x,y++);
-                    break;
-                case 'o':
-                    position.setPosition(x,y--);
-                    break;        
-                default:
-                    break;
-            }
-
-            // Code de la position après le déplacement
-            string depl = carte.getCodePos(x,y);
-
-            // carte.setMap()
-            // [depl] = map[init];
-            // map.erase(init); 
-        }
-    }
- */
     void Guerrier::desc(){
         cout << "Je suis un guerrier de l'equipe "<< equipe <<
          " et je suis à la position : " << position.getCodePos() << endl;
@@ -106,7 +74,7 @@ using namespace std;
     }
 
 
-        //ACCESSOR FUNCTIONS
+    // retourne _Sprite
     sf::Sprite Guerrier::getSprite() const{  //Player Sprite
         return _Sprite;
     }
@@ -129,7 +97,7 @@ using namespace std;
             _AnimClock.restart();
 
         }
-        position.setPosition(_Sprite.getPosition().x + 32,_Sprite.getPosition().y+ 32);
+        position.setPosition(_Sprite.getPosition().x,_Sprite.getPosition().y);
 
     }
 
@@ -150,7 +118,7 @@ using namespace std;
             _AnimClock.restart();
 
         }
-        position.setPosition(_Sprite.getPosition().x +32 ,_Sprite.getPosition().y +32);
+        position.setPosition(_Sprite.getPosition().x ,_Sprite.getPosition().y);
     }
 
     void Guerrier::moveRight(){
@@ -171,7 +139,7 @@ using namespace std;
         
         }
         
-        position.setPosition(_Sprite.getPosition().x +32,_Sprite.getPosition().y +32);
+        position.setPosition(_Sprite.getPosition().x,_Sprite.getPosition().y);
         
     }
 
@@ -190,11 +158,15 @@ using namespace std;
             }
             _AnimClock.restart();
         }
-        position.setPosition(_Sprite.getPosition().x+32,_Sprite.getPosition().y+32);
+        position.setPosition(_Sprite.getPosition().x,_Sprite.getPosition().y);
     }   
 
     void Guerrier::setSpeed(float TEMP_Speed, sf::Time TEMP__AnimTime) { //Sprint Speed
         _Speed = TEMP_Speed;
         _AnimTime = TEMP__AnimTime;
+    }
+
+    char Guerrier::getName() const{
+        return equipe;
     }
 

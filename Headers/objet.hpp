@@ -15,7 +15,7 @@
             void setPoints(int);
             void desc();
             sf::Sprite getSprite() const;
-            
+            char getName() const;
             
     };
 

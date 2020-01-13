@@ -12,7 +12,7 @@
             Obstacle(Position,std::string, sf::Texture &);
             std::string getType() const;
             void desc();
-            
+            char getName() const;
             sf::Sprite getSprite() const;
     };
 

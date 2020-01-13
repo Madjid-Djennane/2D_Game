@@ -27,13 +27,24 @@
         carte->descCarte();
 
         // le joueur principale
-        Element * guerrier1 =  map["00320032"];
+        Element * guerrier1 =  map["00000000"];
         mainPlayer = static_cast<Guerrier *> (guerrier1);
 
+        for(auto& element: map) {
+            if(element.second->getName() == 'h') {
+                autoPlayer = static_cast<Guerrier *> (element.second);  
+                autoPlayer->setSpeed(0.10, sf::milliseconds(80));      
+                break;
+            }
+        }
+
+        /* 
         Element * guerrier2 = map["02880544"];
         autoPlayer = static_cast<Guerrier *> (guerrier2);
-        autoPlayer->setSpeed(0.10, sf::milliseconds(80)); // initialise la vitesse du joueur 'auto'
+        autoPlayer->setSpeed(0.10, sf::milliseconds(80)); // initialise la vitesse du joueur 'auto' */
     
+
+
     }
 
     // Les déplacement du joueur controlé par l'utilisateur
@@ -81,7 +92,6 @@
     // les déplacement du joueur controlé par le programme
 
     bool Game::autoPlayerMovement(int direction) {
-        
         
         switch(direction) {
             case 0 : //up
@@ -137,6 +147,8 @@
 
 
     Game::~Game() {
+        std::cout << "===============" << std::endl;
+        carte->descCarte();
         delete(carte);
         carte = NULL;
     }

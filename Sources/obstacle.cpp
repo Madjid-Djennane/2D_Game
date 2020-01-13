@@ -24,3 +24,7 @@ using namespace std;
         return _Sprite;
     }
 
+    char Obstacle::getName() const {
+        return 'o';
+    }
+

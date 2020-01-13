@@ -97,10 +97,10 @@ using namespace std;
 
     // ajouter un l'element à la position (x,y) dans le fichier décrit par le caractère 'c'
     void Carte::addElement(int x, int y, char c){
-
-        y = y*64+32;
-        x = x*64+32;
-
+        
+        x = x*64;
+        y = y*64;
+        
         string codePos(Carte::getCodePos(x,y));
 
 
@@ -135,17 +135,13 @@ using namespace std;
         int x = guerrier->getPosition().getX();
         int y = guerrier->getPosition().getY();
 
-        string init = Carte::getCodePos(x,y);
-
 
         switch (direction){
             case 0: //up
-                y=y-16;
-                
-                for(int i=0; i < 64; i++) {
-                    int x2 = x-i;
-                    if(map.count(Carte::getCodePos(x2,y-64))>0){
-                        //std::cout << "trouvé" << std::endl;
+                y=y-16;   
+                 for(int i=0; i <= 48; i++) {  
+                    if(map.count(Carte::getCodePos(x-i,y-32)) > 0 ||
+                       map.count(Carte::getCodePos(x+i,y-32)) > 0){
                         return false;
                         break;
                     }
@@ -153,11 +149,17 @@ using namespace std;
                 break;
 
             case 1: //left
-                x=x-16;
-                for(int i=0; i < 64; i++) {
-                    int y2 = y-i;
-                    if(map.count(Carte::getCodePos(x-64,y2))>0){
-                        //std::cout << "trouvé" << std::endl;
+                x=x-48;
+                for(int i=0; i <= 48; i++) {
+                    if(map.count(Carte::getCodePos(x,y+i))>0 || 
+                        map.count(Carte::getCodePos(x,y-i)) > 0){
+
+                        return false;
+                        break;
+                    }
+                }
+                for(int i=48; i <= 64; i++) {
+                    if(map.count(Carte::getCodePos(x,y+i))>0){
                         return false;
                         break;
                     }
@@ -165,11 +167,11 @@ using namespace std;
                 break;
 
             case 2: //down
-                y=y+32;
-                for(int i=0; i < 64; i++) {
-                    int x2 = x-i;
-                    if(map.count(Carte::getCodePos(x2,y))>0){
-                        //std::cout << "trouvé" << std::endl;
+                y=y+64;
+                for(int i=0; i <= 48; i++) {
+                    
+                    if(map.count(Carte::getCodePos(x-i,y))>0 ||
+                       map.count(Carte::getCodePos(x+i,y))>0){
                         return false;
                         break;
                     }
@@ -177,15 +179,20 @@ using namespace std;
                 break;
 
             case 3: //right
-                x=x+16;
-                for(int i=0; i < 64; i++) {
-                    int y2 = y-i;
-                    if(map.count(Carte::getCodePos(x,y2))>0){
-                        //std::cout << "trouvé" << std::endl;
+                x=x+48;
+                for(int i=0; i <= 48; i++) {
+                    if(map.count(Carte::getCodePos(x,y-i))>0 ||
+                       map.count(Carte::getCodePos(x,y+i))>0 ){
                         return false;
                         break;
                     }
-                }                
+                }    
+                for(int i=48; i < 64; i++) {
+                    if(map.count(Carte::getCodePos(x,y+i))>0){
+                        return false;
+                        break;
+                    }
+                }            
                 break;
 
             default:
@@ -196,9 +203,9 @@ using namespace std;
 
 
         // la position du guerrier sort de la carte : retourne false
+        //std::cout << x << std::endl;
         if (x<0 || y<0) return false;
-        if (x > larg*64 || y > haut*64) return false;
-
+        if (x > (larg)*64 || y > (haut)*64) return false;
 
         return true;
     }
