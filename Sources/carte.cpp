@@ -200,8 +200,6 @@ using namespace std;
                 break;
         }
 
-
-
         // la position du guerrier sort de la carte : retourne false
         //std::cout << x << std::endl;
         if (x<0 || y<0) return false;

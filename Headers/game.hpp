@@ -11,6 +11,7 @@ class Game{
         Carte * carte;
         Guerrier * mainPlayer;
         Guerrier * autoPlayer;
+        
 
     public :
         Game();

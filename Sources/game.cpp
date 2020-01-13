@@ -2,6 +2,7 @@
 #include "../Headers/carte.hpp"
 #include <map>
 
+
     Game::Game(){
 
 
@@ -34,16 +35,9 @@
             if(element.second->getName() == 'h') {
                 autoPlayer = static_cast<Guerrier *> (element.second);  
                 autoPlayer->setSpeed(0.10, sf::milliseconds(80));      
-                break;
+                break;                
             }
         }
-
-        /* 
-        Element * guerrier2 = map["02880544"];
-        autoPlayer = static_cast<Guerrier *> (guerrier2);
-        autoPlayer->setSpeed(0.10, sf::milliseconds(80)); // initialise la vitesse du joueur 'auto' */
-    
-
 
     }
 
@@ -92,52 +86,55 @@
     // les déplacement du joueur controlé par le programme
 
     bool Game::autoPlayerMovement(int direction) {
+                    
+            switch(direction) {
+                case 0 : //up
+                    if(carte->moveGuerrier(autoPlayer,0)){
+                        Position initPos = autoPlayer->getPosition();
+                        autoPlayer->moveUp();
+                        carte->updateMap(autoPlayer,initPos); 
+                        return false;
+                    }
+                    return true;
+                    break;
+
+                case 1 : //left
+                    if(carte->moveGuerrier(autoPlayer,1)){
+                        Position initPos = autoPlayer->getPosition();
+                        autoPlayer->moveLeft();
+                        carte->updateMap(autoPlayer,initPos);
+                        return false;
+                    }
+                    return true;
+                    break;
+
+                case 2 : //down
+                    if(carte->moveGuerrier(autoPlayer,2)){
+                        Position initPos = autoPlayer->getPosition();
+                        autoPlayer->moveDown();
+                        carte->updateMap(autoPlayer,initPos);
+                        return false;
+                    }
+                    return true;
+                    break;
+
+                case 3 : //right
+                    if(carte->moveGuerrier(autoPlayer,3)){
+                        Position initPos = autoPlayer->getPosition();
+                        autoPlayer->moveRight();
+                        carte->updateMap(autoPlayer,initPos);
+                        return false;
+                    }
+                    return true;
+                    break;
+
+                default :
+                    return 0;
+                    break;    
+            }
+
+
         
-        switch(direction) {
-            case 0 : //up
-                if(carte->moveGuerrier(autoPlayer,0)){
-                    Position initPos = autoPlayer->getPosition();
-                    autoPlayer->moveUp();
-                    carte->updateMap(autoPlayer,initPos); 
-                    return false;
-                }
-                return true;
-                break;
-
-            case 1 : //left
-                if(carte->moveGuerrier(autoPlayer,1)){
-                    Position initPos = autoPlayer->getPosition();
-                    autoPlayer->moveLeft();
-                    carte->updateMap(autoPlayer,initPos);
-                    return false;
-                }
-                return true;
-                break;
-
-            case 2 : //down
-                if(carte->moveGuerrier(autoPlayer,2)){
-                    Position initPos = autoPlayer->getPosition();
-                    autoPlayer->moveDown();
-                    carte->updateMap(autoPlayer,initPos);
-                    return false;
-                }
-                return true;
-                break;
-
-            case 3 : //right
-                if(carte->moveGuerrier(autoPlayer,3)){
-                    Position initPos = autoPlayer->getPosition();
-                    autoPlayer->moveRight();
-                    carte->updateMap(autoPlayer,initPos);
-                    return false;
-                }
-                return true;
-                break;
-
-            default :
-                return 0;
-                break;    
-        }
         
     }
 
@@ -147,8 +144,6 @@
 
 
     Game::~Game() {
-        std::cout << "===============" << std::endl;
-        carte->descCarte();
         delete(carte);
         carte = NULL;
     }
