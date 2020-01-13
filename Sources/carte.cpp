@@ -67,7 +67,7 @@ using namespace std;
 
     // retourne la map
 
-    std::map<std::string,Element *> Carte::getMap(){
+    std::map<std::string,Element *>& Carte::getMap(){
         return map;
     }
 
@@ -129,7 +129,7 @@ using namespace std;
 
     // Déplacer un Guerrier
 
-    bool Carte::moveGuerrier(Element * guerrier, int direction){
+    std::string Carte::moveGuerrier(Element * guerrier, int direction){
         
         // la position du guerrier dans l'interface
         int x = guerrier->getPosition().getX();
@@ -140,72 +140,100 @@ using namespace std;
             case 0: //up
                 y=y-16;   
                  for(int i=0; i <= 48; i++) {  
-                    if(map.count(Carte::getCodePos(x-i,y-32)) > 0 ||
-                       map.count(Carte::getCodePos(x+i,y-32)) > 0){
-                        return false;
-                        break;
+                    if(map.count(Carte::getCodePos(x-i,y-32)) > 0){
+                        return Carte::getCodePos(x-i,y-32);
                     }
-                }        
+                       if(map.count(Carte::getCodePos(x+i,y-32)) > 0){
+                        return Carte::getCodePos(x+i,y-32);
+                    }
+                }
+                if (x<0 || y<0) return "NULL";
+                if (x > (larg)*64 || y > (haut)*64) return "NULL";  
+                return "OK";         
                 break;
 
             case 1: //left
                 x=x-48;
                 for(int i=0; i <= 48; i++) {
-                    if(map.count(Carte::getCodePos(x,y+i))>0 || 
-                        map.count(Carte::getCodePos(x,y-i)) > 0){
+                    if(map.count(Carte::getCodePos(x,y+i))>0){
+                        return Carte::getCodePos(x,y+i);
+                    } 
+                    if(map.count(Carte::getCodePos(x,y-i)) > 0){
 
-                        return false;
-                        break;
+                        return Carte::getCodePos(x,y-i);
                     }
                 }
                 for(int i=48; i <= 64; i++) {
                     if(map.count(Carte::getCodePos(x,y+i))>0){
-                        return false;
+                        return Carte::getCodePos(x,y+i);
                         break;
                     }
                 }
+                if (x<0 || y<0) return "NULL";
+                if (x > (larg)*64 || y > (haut)*64) return "NULL";  
+                return "OK";  
                 break;
 
             case 2: //down
                 y=y+64;
                 for(int i=0; i <= 48; i++) {
-                    
-                    if(map.count(Carte::getCodePos(x-i,y))>0 ||
-                       map.count(Carte::getCodePos(x+i,y))>0){
-                        return false;
-                        break;
+                    if(map.count(Carte::getCodePos(x-i,y))>0){
+                        return Carte::getCodePos(x-i,y);
+                    }
+                    if(map.count(Carte::getCodePos(x+i,y))>0){
+                        return Carte::getCodePos(x+i,y);    
                     }
                 }
+                if (x<0 || y<0) return "NULL";
+                if (x > (larg)*64 || y > (haut)*64) return "NULL";  
+                return "OK";          
                 break;
 
             case 3: //right
                 x=x+48;
                 for(int i=0; i <= 48; i++) {
-                    if(map.count(Carte::getCodePos(x,y-i))>0 ||
-                       map.count(Carte::getCodePos(x,y+i))>0 ){
-                        return false;
-                        break;
+                    if(map.count(Carte::getCodePos(x,y-i))>0) {
+                        return Carte::getCodePos(x,y-i);
+                    } 
+                    if(map.count(Carte::getCodePos(x,y+i))>0 ){
+                        return Carte::getCodePos(x,y+i);
                     }
                 }    
                 for(int i=48; i < 64; i++) {
                     if(map.count(Carte::getCodePos(x,y+i))>0){
-                        return false;
-                        break;
+                        return Carte::getCodePos(x,y+i);
                     }
-                }            
+                }
+                if (x<0 || y<0) return "NULL";
+                if (x > (larg)*64 || y > (haut)*64) return "NULL";  
+                return "OK";          
                 break;
 
             default:
-                return false;
+                return "NULL";
                 break;
         }
 
-        // la position du guerrier sort de la carte : retourne false
-        //std::cout << x << std::endl;
-        if (x<0 || y<0) return false;
-        if (x > (larg)*64 || y > (haut)*64) return false;
+        return "NULL";
+    }
 
-        return true;
+    // l'utilisateur prends l'objet
+
+    void Carte::takeObject(Guerrier * guerrier, std::string position) {
+        
+        Objet * objet = static_cast<Objet *> (map[position]);
+        int points(objet->getPoints());
+        
+        if(points % 2 == 0){
+            guerrier->setPointsVie(10,'p');
+        }else{
+            guerrier->setSpeed(0.35, sf::milliseconds(80));
+        }
+
+        map[position] = NULL;
+        map.erase(position);
+
+        
     }
 
     // mise à jour de la position d'un guerrier dans la map

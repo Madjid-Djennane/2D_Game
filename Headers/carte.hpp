@@ -20,9 +20,10 @@ class Carte{
         Carte();
         Carte(std::string file, sf::Texture, sf::Texture, sf::Texture); 
         std::string getCodePos(int x, int y);
-        std::map<std::string,Element *> getMap();
+        std::map<std::string,Element *>& getMap();
         void displayMap(std::string file) const;
-        bool moveGuerrier(Element *, int);
+        std::string moveGuerrier(Element *, int);
+        void takeObject(Guerrier *, std::string);
         void descCarte() const;
         int getLarg() const;
         int getHaut() const;

@@ -12,14 +12,14 @@
             int capDef;
             int pointsVie;
             
-            sf::Sprite _Sprite; //Declare Player Sprite
-            sf::Vector2i _Source; //Declare Source (Sprite Sheet Crop)
-            enum _Direction{ Up, Left, Down, Right }; //Declare Direction Enumeration
+            sf::Sprite _Sprite; 
+            sf::Vector2i _Source; 
+            enum _Direction{ Up, Left, Down, Right }; 
 
-            //ANIMATION DATA
-            float _Speed; //Player Speed
-            sf::Clock _AnimClock; //Player Animation Clock
-            sf::Time _AnimTime; //Player Animation Time
+            
+            float _Speed; 
+            sf::Clock _AnimClock; 
+            sf::Time _AnimTime; 
 
         public :
             Guerrier();
@@ -29,21 +29,22 @@
             int getCapAtt() const;
             int getCapDef() const;
             int getPointsVie() const;
+            void setPointsVie(int,char);
             //void deplacerGuerrier(char, Carte);
             void setPos(int,int);
             void desc();
             void completeDesc() const;
             bool estAdversaire(Guerrier *);
             char getName() const;
-
-            //PLAYER MOVEMENT FUNCTIONS
+            void updateSprite(int);
+            void fight(int);
             void moveUp();
             void moveDown();
             void moveRight();
             void moveLeft();
             void setSpeed(float, sf::Time);
     
-            //ACCESSOR FUNCTIONS
+            
             sf::Sprite getSprite() const;
 
             

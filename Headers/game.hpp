@@ -7,17 +7,20 @@
 
 class Game{
         
-    private :
+    public :
         Carte * carte;
         Guerrier * mainPlayer;
         Guerrier * autoPlayer;
         
 
     public :
+        int winWidth;
+        int winHeight;
         Game();
         void mainPlayerMovement();
         bool autoPlayerMovement(int);
-        std::map<std::string, Element *> getMap();
+        void takeElement();
+        std::map<std::string, Element *>& getMap();
         ~Game();
         
         

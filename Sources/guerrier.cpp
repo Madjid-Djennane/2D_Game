@@ -6,6 +6,7 @@
 #include <iostream>
 using namespace std;
 
+    //constructeur
     Guerrier::Guerrier(Position _position, string _nom, char _equipe,
                        int _capAtt, int _capDef, int _pointsVie, sf::Texture& TEMP_Texture):
         Element(_position),
@@ -15,14 +16,12 @@ using namespace std;
         capDef(_capDef),
         pointsVie(_pointsVie){
 
-            //PLAYER SPRITE
-            _Sprite.setTexture(TEMP_Texture); //Set Sprite Texture
-            _Sprite.setPosition(_position.getX(), _position.getY()); //Set Sprite Position (Centre)
-            //_Sprite.setScale(1.5f, 1.5f); //Sprite Scale
+            //Initialise le sprite avec la texture
+            _Sprite.setTexture(TEMP_Texture); 
+            //initialise la position du sprite dans l'interface
+            _Sprite.setPosition(_position.getX(), _position.getY()); 
             sf::Vector2i _Source(1, Down); //Default Sprite Sheet Crop
             _Sprite.setTextureRect(sf::IntRect(_Source.x * 64, _Source.y * 64, 64, 64)); //Crop Sprite Sheet (Default Crop)
-            //_Sprite.setTextureRect(sf::IntRect(0,0,64,64));
-            //PLAYER / ANIMATION SPEED
             _AnimTime = sf::milliseconds(80); //Animation Speed
             _Speed = 0.20; //Player Speed
 
@@ -34,6 +33,10 @@ using namespace std;
                 
                 
         }
+
+    void Guerrier::fight(int direction) {
+
+    }
 
     char Guerrier::getEquipe() const {
         return equipe;
@@ -53,6 +56,13 @@ using namespace std;
 
     int Guerrier::getPointsVie() const {
         return pointsVie;
+    }
+
+    void Guerrier::setPointsVie(int _points,char a) {
+        if(a == 'p')
+            pointsVie = pointsVie + _points;
+        else 
+            pointsVie = pointsVie - _points;    
     }
 
     void Guerrier::desc(){
@@ -75,7 +85,7 @@ using namespace std;
 
 
     // retourne _Sprite
-    sf::Sprite Guerrier::getSprite() const{  //Player Sprite
+    sf::Sprite Guerrier::getSprite() const{  
         return _Sprite;
     }
 
@@ -161,11 +171,14 @@ using namespace std;
         position.setPosition(_Sprite.getPosition().x,_Sprite.getPosition().y);
     }   
 
-    void Guerrier::setSpeed(float TEMP_Speed, sf::Time TEMP__AnimTime) { //Sprint Speed
+    void Guerrier::setSpeed(float TEMP_Speed, sf::Time TEMP__AnimTime) { 
         _Speed = TEMP_Speed;
         _AnimTime = TEMP__AnimTime;
     }
 
+    void Guerrier::updateSprite(int){
+
+    }
     char Guerrier::getName() const{
         return equipe;
     }
