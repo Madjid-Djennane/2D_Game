@@ -1,1 +1,32 @@
-basic game with c++
+**Projet réalisé par : 
+    Madjid Djennane
+    Salim Si Hadj Mohand
+
+
+**Structure du projet :
+
+|___/Headers (les en-têtes hpp)
+|
+|
+|___/Sources (les fichier sources cpp)
+|
+|
+|___/img (les images/SpriteSheet utilisées dans le développement de l'interface graphique)
+|
+|
+|___/maps (Les cartes du jeu sous forme de fichiers texte)
+
+
+**Bibliothèques utilisées (externes): 
+
+SFML : version 2.5
+
+
+**La compilation et l'execution du projet sous linux se fait de la manière suivante : 
+
+    étape 1 : A l'aide d'un terminal se positionner dans le dossier Sources du projet Sources$
+    étape 2 : taper la commande  'g++ *.cpp -o game -lsfml-graphics -lsfml-window -lsfml-system'
+    étape 3 : un executable nommé 'game' est généré dans le même dossier. On a plus 
+              qu'a taper './game' pour lancé le jeu (un executable est déjà présent)
+
+

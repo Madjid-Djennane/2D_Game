@@ -40,7 +40,7 @@ using namespace std;
         return _Sprite;
     }
 
-    //retourne un caractère qui identifie l'élément parmis les autres (guerrier, obstacle)
+    //retourne un caractère qui identifie l'élément parmis les autres types (guerrier, obstacle)
     char Objet::getName() const {
         return 'a';
     }

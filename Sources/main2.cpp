@@ -6,27 +6,23 @@
 #include <typeinfo>
 
 
+// La méthode main qui crée la fenêtre du jeu 
+
 int main() {
     
     Game game = Game();
     std::map<std::string, Element *> map;
 
-    
+    // largeur et hauteur de la fenêtre
     int winWidth(game.winWidth*64);
     int winHeigth(game.winHeight*64);
     
 
-    //Window
+    //fenêtre
     sf::RenderWindow window(sf::VideoMode(winWidth, winHeigth), "Testing");
     window.setKeyRepeatEnabled(false);
 
-/*     sf::Texture back;
-    if(!back.loadFromFile("../img/back.png")) {
-        std::cout << "error" << std::endl;
-    }
 
-    sf::Sprite sprite(back);
- */
     int dir(0);
 
     sf::Font font;
@@ -78,20 +74,24 @@ int main() {
         window.clear(); //Clear Window
 
         map = game.getMap();
-        
+        // les mouvements du guerrier contrôlé par l'utilisateur 
         game.mainPlayerMovement();
 
+        // les mouvements du guerrier contrôlé par le programme
         if(game.autoPlayerMovement(dir)){
             dir = std::rand() % 4;
         }
 
+        // affichage de tout les éléments dans la map
         for(auto& element : map){
             window.draw(element.second->getSprite());
         }
 
+        // Récuperer les points de vie des deux guerriers
         vie1.setString(std::to_string(game.mainPlayer->getPointsVie()));
         vie2.setString(std::to_string(game.autoPlayer->getPointsVie()));
-
+        
+        // Affichage des noms et points de vie des guerriers
         window.draw(player1);
         window.draw(vie1);
 
@@ -103,12 +103,5 @@ int main() {
         window.display(); //Display Window
     }
     
-    
-
-    
-
-    
-    
-
     return 0;
 }

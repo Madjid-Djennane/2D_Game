@@ -30,7 +30,6 @@
             int getCapDef() const;
             int getPointsVie() const;
             void setPointsVie(int,char);
-            //void deplacerGuerrier(char, Carte);
             void setPos(int,int);
             void desc();
             void completeDesc() const;

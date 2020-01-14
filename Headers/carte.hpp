@@ -28,7 +28,6 @@ class Carte{
         int getLarg() const;
         int getHaut() const;
         void updateMap(Guerrier *,Position);
-        //void setMap(std::string);
         ~Carte();
 
 };
